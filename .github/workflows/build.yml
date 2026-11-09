@@ -1,0 +1,72 @@
+name: Build APK
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      HAS_KEYSTORE: ${{ secrets.KEYSTORE_BASE64 != '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Store listing assets (screenshots, icon, banner, Persian/English texts) are
+      # published with every run, even if the app build fails.
+      - name: Upload store assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: PhoneBackupPro-store-assets
+          path: store/
+          if-no-files-found: error
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      # No Gradle wrapper in the repo, so install Gradle directly (AGP 8.5.2 needs >= 8.7)
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+
+      - name: Build debug APKs (free + premium test)
+        run: gradle :app:assembleFreeDebug :app:assemblePremiumDebug --stacktrace
+
+      - name: Upload free debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: PhoneBackupPro-FREE-debug-apk
+          path: app/build/outputs/apk/free/debug/*.apk
+          if-no-files-found: error
+
+      # Test build: every premium feature unlocked + sample data. NOT for the store.
+      - name: Upload premium TEST debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: PhoneBackupPro-PREMIUM-TEST-debug-apk
+          path: app/build/outputs/apk/premium/debug/*.apk
+          if-no-files-found: error
+
+      # Signed release for Cafe Bazaar. Needs 4 repository secrets (see README):
+      # KEYSTORE_BASE64, KEYSTORE_PASSWORD, KEY_ALIAS, KEY_PASSWORD
+      - name: Build signed release APK
+        if: env.HAS_KEYSTORE == 'true'
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > "$RUNNER_TEMP/release.jks"
+          export KEYSTORE_FILE="$RUNNER_TEMP/release.jks"
+          gradle :app:assembleFreeRelease :app:assemblePremiumRelease --stacktrace
+
+      - name: Upload release APK
+        if: env.HAS_KEYSTORE == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: PhoneBackupPro-release-apks
+          path: app/build/outputs/apk/*/release/*.apk
