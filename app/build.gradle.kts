@@ -1,8 +1,21 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
 }
+
+// Signing / Bazaar values: environment variables (GitHub Actions) or a local keystore.properties in the project root
+// (git-ignored, see README / store/PUBLISH-CHECKLIST-fa.md). Declared BEFORE android {} because defaultConfig uses them.
+val ksProps = Properties().apply {
+    val f = rootProject.file("keystore.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
+}
+fun ksValue(env: String, prop: String): String? = System.getenv(env) ?: ksProps.getProperty(prop)
+val ksFile = ksValue("KEYSTORE_FILE", "storeFile")
+// Cafe Bazaar RSA public key: GitHub Secret BAZAAR_RSA_KEY (or bazaarRsaKey in keystore.properties)
+val bazaarRsaKey = (ksValue("BAZAAR_RSA_KEY", "bazaarRsaKey") ?: "").filterNot { it.isWhitespace() || it == '"' }
 
 android {
     namespace = "com.example.phonebackuppro"
@@ -20,17 +33,6 @@ android {
     packaging {
         resources.excludes += listOf("/META-INF/{AL2.0,LGPL2.1}", "DebugProbesKt.bin")
     }
-    // Release signing: set these environment variables (see README) or sign in Android Studio.
-    // Either environment variables (GitHub Actions) or a local keystore.properties file in the project root
-    // (see README / store/PUBLISH-CHECKLIST-fa.md). keystore.properties and *.jks are git-ignored.
-    val ksProps = java.util.Properties().apply {
-        val f = rootProject.file("keystore.properties")
-        if (f.exists()) f.inputStream().use { load(it) }
-    }
-    fun ksValue(env: String, prop: String): String? = System.getenv(env) ?: ksProps.getProperty(prop)
-    val ksFile = ksValue("KEYSTORE_FILE", "storeFile")
-    // Cafe Bazaar RSA public key: GitHub Secret BAZAAR_RSA_KEY (or bazaarRsaKey in keystore.properties)
-    val bazaarRsaKey = (ksValue("BAZAAR_RSA_KEY", "bazaarRsaKey") ?: "").filterNot { it.isWhitespace() || it == '"' }
     signingConfigs {
         if (ksFile != null) {
             create("release") {
@@ -105,7 +107,7 @@ dependencies {
 gradle.taskGraph.whenReady {
     val storeRelease = allTasks.any { it.name.endsWith("FreeRelease", ignoreCase = true) && it.name.startsWith("assemble") }
     val key = System.getenv("BAZAAR_RSA_KEY") ?: rootProject.file("keystore.properties").takeIf { it.exists() }
-        ?.let { f -> java.util.Properties().apply { f.inputStream().use { load(it) } }.getProperty("bazaarRsaKey") }
+        ?.let { f -> Properties().apply { f.inputStream().use { load(it) } }.getProperty("bazaarRsaKey") }
     if (storeRelease && key.isNullOrBlank()) {
         throw GradleException("BAZAAR_RSA_KEY is empty. Set the GitHub Secret BAZAAR_RSA_KEY (or bazaarRsaKey in keystore.properties).")
     }
