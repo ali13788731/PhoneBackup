@@ -22,4 +22,5 @@
 با حذف برنامه یا پاک کردن فایل‌های پوشه‌ی PhoneBackupPro، همه‌ی اطلاعات پشتیبان از گوشی حذف می‌شود.
 
 ## تماس
-ali_faraji78@yahoo.com
+Email: ali_faraji78@yahoo.com
+Telegram: https://t.me/mrpcdesigner
