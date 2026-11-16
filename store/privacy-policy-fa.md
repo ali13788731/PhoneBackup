@@ -1,26 +1,31 @@
-# سیاست حریم خصوصی — Phone Backup (طراحی‌شده توسط Mr.PC)
+Privacy Policy — Phone Backup
+Designed by Mr.PC
 
-آخرین به‌روزرسانی: [تاریخ را بنویسید]
+Last Updated: November 16, 2026
+1. Information We Access
+With your permission, Phone Backup accesses your contacts, call history, and SMS messages to create backups. The app also accesses your phone's storage to locate and manage backup files and restores the same data when you choose to restore a backup.
+2. Where Your Data Is Stored
+Your backup files are stored locally on your device only.
 
-## چه اطلاعاتی خوانده می‌شود؟
-برنامه برای ساخت فایل پشتیبان، با اجازه‌ی شما **مخاطبین، تاریخچه‌ی تماس‌ها و پیامک‌ها** را می‌خواند و برای بازیابی، همین موارد را روی گوشی می‌نویسد. برای پیدا کردن فایل‌های پشتیبان در حافظه، به فایل‌های گوشی دسترسی می‌گیرد.
+Phone Backup does not upload your contacts, call history, SMS messages, or backup files to the internet or any server operated by us.
 
-## این اطلاعات کجا می‌روند؟
-فایل‌های پشتیبان **فقط روی حافظه‌ی گوشی شما** ذخیره می‌شوند. برنامه هیچ مخاطب، تماس، پیامک یا فایل پشتیبانی را به اینترنت یا سرور ما ارسال نمی‌کند. ما هیچ‌گونه تحلیل‌گر یا تبلیغات در برنامه نداریم.
+We do not use analytics services or advertising SDKs in the app.
+3. Internet Connectivity
+- App Updates: The app may download a small file containing version information to check for available updates. No personal or device information is transmitted.
+- Payments: Purchases and payment verification are handled through Cafe Bazaar. We do not have access to your banking information or payment card details.
+4. Sharing Backup Files
+Backup files leave your device only when you explicitly choose the Share option and select a destination.
 
-## ارتباط اینترنتی
-- برای بررسی نسخه‌ی جدید، یک فایل کوچک حاوی شماره‌ی نسخه دریافت می‌شود. هیچ اطلاعاتی از کاربر یا گوشی ارسال نمی‌شود.
-- پرداخت و بررسی خرید از طریق کافه‌بازار انجام می‌شود و ما به اطلاعات بانکی شما دسترسی نداریم.
+Please keep your backup files secure, as they may contain sensitive personal information.
+5. Default SMS Application
+To restore SMS messages, Android requires Phone Backup to temporarily become your device's default SMS application.
 
-## اشتراک‌گذاری
-فایل پشتیبان فقط وقتی از گوشی خارج می‌شود که خودتان گزینه‌ی «اشتراک‌گذاری» را بزنید و مقصد را انتخاب کنید. مراقب نگهداری فایل‌ها باشید، چون شامل اطلاعات شخصی است.
+Phone Backup does not send or receive SMS messages.
+6. Data Deletion
+Uninstalling the app or deleting the files in the PhoneBackupPro folder will remove your backup files from your device.
 
-## پیامک پیش‌فرض
-برای بازیابی پیامک‌ها، اندروید لازم است برنامه موقتاً «برنامه‌ی پیش‌فرض پیامک» شود. برنامه پیامکی دریافت یا ارسال نمی‌کند.
-
-## حذف اطلاعات
-با حذف برنامه یا پاک کردن فایل‌های پوشه‌ی PhoneBackupPro، همه‌ی اطلاعات پشتیبان از گوشی حذف می‌شود.
-
-## تماس
-Email: ali_faraji78@yahoo.com
-Telegram: https://t.me/mrpcdesigner
+Please note that backup files shared or copied to other locations must be deleted separately.
+7. Contact Us
+If you have any questions about this Privacy Policy, please contact us:
+- Email: ali_faraji78@yahoo.com
+- Telegram: @mrpcdesigner
